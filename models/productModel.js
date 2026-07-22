@@ -27,16 +27,31 @@ function getSortedByPrice(direction = 'ASC') {
 
 // Sort by availability (in-stock first, or by quantity)
 function getSortedByAvailability() {
-  return db.prepare('SELECT * FROM item ORDER BY quantity DESC').all();
+  return db.prepare('SELECT * FROM item ORDER BY quantity ASC').all();
 }
 
+// Create a new product for sale
+function createProduct({ name, description, image_url, quantity, price }) {
+  const result = db.prepare(
+    `INSERT INTO item (name, description, image_url, quantity, price)
+     VALUES (?, ?, ?, ?, ?)`
+  ).run(name, description, image_url, quantity, price);
+
+  return result.lastInsertRowid; // return the new product's id
+}
+
+function deleteProduct(id) {
+  return db.prepare('DELETE FROM item WHERE id = ?').run(id);
+}
+
+
 // Update name, image, price, and/or quantity
-function updateProduct(id, { name, image_path, price, quantity }) {
+function updateProduct(id, { name, image_url, quantity, price }) {
   return db.prepare(
     `UPDATE item
-     SET name = ?, image_path = ?, price = ?, quantity = ?
+     SET name = ?, image_url = ?, quantity = ?, price = ?
      WHERE id = ?`
-  ).run(name, image_path, price, quantity, id);
+  ).run(name, image_url, quantity, price, id);
 }
 
 
@@ -53,6 +68,8 @@ module.exports = {
   searchProducts,
   getSortedByPrice,
   getSortedByAvailability,
+  createProduct,
+  deleteProduct,
   updateProduct,
   reduceQuantity
 };

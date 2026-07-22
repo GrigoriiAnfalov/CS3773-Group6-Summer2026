@@ -19,6 +19,14 @@ console.log(productModel.searchProducts("Bread"));
 console.log('--- Search Products by Description ---');
 console.log(productModel.searchProducts("restores"));
 
+console.log('--- Create Product ---');
+//console.log(productModel.createProduct({name: "TestItem", description: "Test", image_url: "idk", quantity: 5, price: 100}));
+//console.log(productModel.searchProducts("Test"));
+//console.log(productModel.deleteProduct(20));
+//console.log(productModel.searchProducts("Test"));
+
+
+
 // Test order model
 
 console.log('--- List All Orders ---');
