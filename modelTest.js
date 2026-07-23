@@ -1,6 +1,7 @@
 const productModel = require('./models/productModel');
 const userModel = require('./models/userModel');
 const orderModel = require('./models/orderModel');
+const discountModel = require('./models/discountModel');
 
 // Test user lookup
 console.log('--- User lookup ---');
@@ -55,4 +56,20 @@ console.log('--- Execute Order---');
 //console.log(orderModel.executeOrder(7));
 //console.log(orderModel.getOrderById(7));
 //console.log(productModel.searchProducts("Test"));
+
+
+console.log('--- List All Codes ---');
+console.log(discountModel.getAllDiscountCodes());
+
+console.log('--- List specific Codes ---');
+console.log(discountModel.getDiscountByCode("OPEN"));
+
+console.log('--- Create Codes ---');
+console.log(discountModel.createDiscountCode({code: "TEST", multiplier: 0.1}));
+console.log(discountModel.getAllDiscountCodes());
+
+console.log('--- Delete Codes ---');
+console.log(discountModel.deleteDiscountCode("TEST"));
+console.log(discountModel.getAllDiscountCodes());
+
 
