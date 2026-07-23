@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Orders</title>
+</head>
+<body>
+    <h1>Customer Orders</h1>
+
+    <!-- Sort Orders -->
+    <form action="/orders" method="GET">
+        <select name="sortBy">
+            <option value="order_date">Sort by Order Time (Newest First)</option>
+            <option value="user">Sort by Customer</option>
+            <option value="totalAmount">Sort by Order Size ($)</option>
+        </select>
+        <button type="submit">Sort Orders</button>
+    </form>
+
+    <hr>
+
+    <!-- Orders List / Table -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer Username</th>
+                <th>Order Date</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% orders.forEach(function(order) { %>
+            <tr>
+                <td><%= order.id %></td>
+                <td><%= order.user %></td>
+                <td><%= order.order_date %></td>
+                <!-- totalAmount is calculated dynamically or joined in the controller -->
+                <td>$<%= order.totalAmount %></td> 
+                <td><%= order.status %></td>
+                <td>
+                    <!-- View Details -->
+                    <form action="/orders/details/<%= order.id %>" method="GET" style="display:inline;">
+                        <button type="submit">View Details</button>
+                    </form>
+                    
+                    <!-- Execute Order -->
+                    <% if(order.status === 'Pending') { %>
+                    <form action="/orders/execute/<%= order.id %>" method="POST" style="display:inline;">
+                        <button type="submit">Execute Order</button>
+                    </form>
+                    <% } %>
+                </td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>
