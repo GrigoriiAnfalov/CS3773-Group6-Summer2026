@@ -1,12 +1,11 @@
 # Model
 
-* Implement SQLite
-* Create classes for items, orders, users
+* Create classes for items, orders
 * Verify that Controller can interact with the DB
 * Implement Images
 
 # View
-
+* Make a login page
 * Make homepage page
 * Make Item Catalogue page
 * Make Orders page
