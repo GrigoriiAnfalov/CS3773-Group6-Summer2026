@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Product Catalog</title>
+</head>
+<body>
+    <h1>Product Inventory</h1>
+
+    <!-- Browse, Search, and Filter -->
+    <form action="/products" method="GET">
+        <input type="text" name="searchQuery" placeholder="Search by Name/Description">
+        
+        <select name="sortBy">
+            <option value="">-- Sort By --</option>
+            <option value="price">Price</option>
+            <option value="availability">Availability</option>
+        </select>
+
+        <select name="filterTag">
+            <option value="">-- Filter by Tag --</option>
+            <option value="Sale">Sale</option>
+            <option value="Discontinued">Discontinued</option>
+        </select>
+        
+        <button type="submit">Search & Filter</button>
+    </form>
+
+    <hr>
+
+    <!-- Create New Item -->
+    <h2>Add New Product</h2>
+    <form action="/products/add" method="POST">
+        <input type="text" name="name" placeholder="Item Name" required>
+        <input type="text" name="description" placeholder="Description">
+        <input type="text" name="image_url" placeholder="Image URL">
+        <input type="number" name="quantity" placeholder="Quantity" required>
+        <input type="number" step="0.01" name="price" placeholder="Price" required>
+        <input type="text" name="tag" placeholder="Tag (e.g., Sale)">
+        <button type="submit">Create Item</button>
+    </form>
+
+    <hr>
+
+    <!-- Create Discount Codes -->
+    <h2>Create Discount Code</h2>
+    <form action="/discounts/add" method="POST">
+        <input type="text" name="code" placeholder="Discount Code (e.g., SAVE20)" required>
+        <input type="number" step="0.01" name="multiplier" placeholder="Multiplier (e.g., 0.80)" required>
+        <button type="submit">Add Discount</button>
+    </form>
+
+    <hr>
+
+    <!-- Product List / Table -->
+    <h2>Current Inventory</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% products.forEach(function(product) { %>
+            <tr>
+                <td><%= product.id %></td>
+                <td><img src="<%= product.image_url %>" alt="<%= product.name %>" width="50"></td>
+                <td><%= product.name %></td>
+                <td><%= product.description %></td>
+                <td><%= product.quantity %></td>
+                <td>$<%= product.price %></td>
+                <td>
+                    <!-- Modify Product -->
+                    <form action="/products/modify/<%= product.id %>" method="GET" style="display:inline;">
+                        <button type="submit">Edit</button>
+                    </form>
+                    <!-- Remove Product -->
+                    <form action="/products/remove/<%= product.id %>" method="POST" style="display:inline;">
+                        <button type="submit">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>
