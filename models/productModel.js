@@ -40,26 +40,33 @@ function createProduct({ name, description, image_url, quantity, price }) {
   return result.lastInsertRowid; // return the new product's id
 }
 
+// probably will not be used
 function deleteProduct(id) {
   return db.prepare('DELETE FROM item WHERE id = ?').run(id);
 }
 
 
 // Update name, image, price, and/or quantity
-function updateProduct(id, { name, image_url, quantity, price }) {
+function updateProduct(id, { name, description, image_url, quantity, price }) {
   return db.prepare(
     `UPDATE item
-     SET name = ?, image_url = ?, quantity = ?, price = ?
+     SET name = ?, description = ?,image_url = ?, quantity = ?, price = ?
      WHERE id = ?`
-  ).run(name, image_url, quantity, price, id);
+  ).run(name, description, image_url, quantity, price, id);
 }
 
 
 // Reduce quantity — called when an order is executed
+// throws an error if amountToReduce > quantity.
 function reduceQuantity(id, amountToReduce) {
-  return db.prepare(
-    'UPDATE item SET quantity = quantity - ? WHERE id = ?'
-  ).run(amountToReduce, id);
+  const result = db.prepare(
+    'UPDATE item SET quantity = quantity - ? WHERE id = ? AND quantity >= ?'
+  ).run(amountToReduce, id, amountToReduce);
+
+  if (result.changes === 0) {
+    throw new Error(`Insufficient stock for item ${id}`);
+  }
+  return result;
 }
 
 module.exports = {
