@@ -16,5 +16,8 @@
 * Add buttons to sort by time, customer, dollar amount
 * Add button for order execution
 
+## Overall
+* Css
+
 # Controller
 * Make OrderController + Routes
