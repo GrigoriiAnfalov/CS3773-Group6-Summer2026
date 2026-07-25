@@ -8,11 +8,9 @@
 * Make an Item Edit page
 * Make a Button to go to the orders page
 
+
 ## In Orders page
-* Show all currently placed orders
-* Add a button to show information about an order
-* Add buttons to sort by time, customer, dollar amount
-* Add button for order execution
+* Make a view order information view
 
 ## Overall
 * Possible changes to the Orders page
