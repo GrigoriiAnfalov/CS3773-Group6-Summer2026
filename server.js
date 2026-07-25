@@ -4,6 +4,7 @@ const requireLogin = require('./middleware/requireLogin');
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const discountRoutes = require('./routes/discountRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
 const app = express();
 
@@ -26,9 +27,10 @@ app.use(requireLogin);
 
 
 app.get('/', (req, res) => {
-  res.redirect('/products');
+  res.redirect('/login');
 });
 
+app.use(orderRoutes);
 app.use(productRoutes);
 app.use(discountRoutes);
 
