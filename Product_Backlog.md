@@ -4,8 +4,6 @@
 
 # View
 
-* Possible changes to the Orders page
-
 ## In Item Catalogue page
 * Make an Item Edit page
 * Make a Button to go to the orders page
@@ -17,6 +15,7 @@
 * Add button for order execution
 
 ## Overall
+* Possible changes to the Orders page
 * Css
 
 # Controller
