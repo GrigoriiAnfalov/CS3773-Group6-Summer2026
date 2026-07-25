@@ -1,5 +1,5 @@
 # Model
-
+* Create unit tests
 * Make a button to sort by availability. I will redo some of the filtering/sorting + their logic.
 
 # View
