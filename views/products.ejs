@@ -69,7 +69,7 @@
             <% products.forEach(function(product) { %>
             <tr>
                 <td><%= product.id %></td>
-                <td><img src="<%= product.image_url %>" alt="<%= product.name %>" width="50"></td>
+                <td><img src="/uploads/<%= product.image_url %>" alt="<%= product.name %>" width="50"></td>
                 <td><%= product.name %></td>
                 <td><%= product.description %></td>
                 <td><%= product.quantity %></td>

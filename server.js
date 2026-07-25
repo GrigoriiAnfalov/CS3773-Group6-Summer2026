@@ -1,14 +1,35 @@
-// server.js
 const express = require('express');
+const session = require('express-session');
+const requireLogin = require('./middleware/requireLogin');
+const authRoutes = require('./routes/authRoutes');
+const productRoutes = require('./routes/productRoutes');
+const discountRoutes = require('./routes/discountRoutes');
+
 const app = express();
 
 // Configure Express to use EJS
 app.set('view engine', 'ejs');
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'dev-secret-change-me',
+  resave: false,
+  saveUninitialized: false
+}));
+
+// /login (GET + POST) and /logout — no auth required to reach these
+app.use(authRoutes);
+
+// Everything below this line requires a logged-in session
+app.use(requireLogin);
+
 
 app.get('/', (req, res) => {
-    // Renders views/index.ejs and passes dynamic data
-    res.render('login');
+  res.redirect('/products');
 });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+app.use(productRoutes);
+app.use(discountRoutes);
 
+app.listen(3000, () => console.log('Server running on port 3000'));

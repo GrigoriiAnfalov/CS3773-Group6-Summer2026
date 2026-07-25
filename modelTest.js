@@ -71,5 +71,7 @@ console.log(discountModel.getAllDiscountCodes());
 console.log('--- Delete Codes ---');
 console.log(discountModel.deleteDiscountCode("TEST"));
 console.log(discountModel.getAllDiscountCodes());
+console.log(discountModel.deleteDiscountCode('idk'));
+console.log(discountModel.getAllDiscountCodes());
 
 
