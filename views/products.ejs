@@ -8,20 +8,20 @@
 
     <!-- Browse, Search, and Filter -->
     <form action="/products" method="GET">
-        <input type="text" name="searchQuery" placeholder="Search by Name/Description">
-        
+        <input type="text" name="searchQuery" placeholder="Search by Name/Description" value="<%= searchQuery %>">
+
         <select name="sortBy">
-            <option value="">-- Sort By --</option>
-            <option value="price">Price</option>
-            <option value="availability">Availability</option>
+            <option value="">-- Sort By Price --</option>
+            <option value="price_asc" <%= sortBy === 'price_asc' ? 'selected' : '' %>>Price: Low to High</option>
+            <option value="price_desc" <%= sortBy === 'price_desc' ? 'selected' : '' %>>Price: High to Low</option>
         </select>
 
-        <select name="filterTag">
-            <option value="">-- Filter by Tag --</option>
-            <option value="Sale">Sale</option>
-            <option value="Discontinued">Discontinued</option>
+        <select name="availability">
+            <option value="">-- Filter by Availability --</option>
+            <option value="in_stock" <%= availability === 'in_stock' ? 'selected' : '' %>>Available</option>
+            <option value="out_of_stock" <%= availability === 'out_of_stock' ? 'selected' : '' %>>Out of Stock</option>
         </select>
-        
+
         <button type="submit">Search & Filter</button>
     </form>
 

@@ -1,22 +1,20 @@
 const productModel = require('../models/productModel');
 
 // GET /products — the internal-portal catalog page
-// Supports optional search (?searchQuery=) and sort (?sortBy=price|availability)
+// Supports optional search (?searchQuery=), price sort (?sortBy=price_asc|price_desc),
+// and availability filter (?availability=in_stock|out_of_stock), all combinable.
 function showProductsPage(req, res) {
-  const { searchQuery, sortBy } = req.query;
+  const { searchQuery, sortBy, availability } = req.query;
 
-  let products;
-  if (searchQuery) {
-    products = productModel.searchProducts(searchQuery);
-  } else if (sortBy === 'price') {
-    products = productModel.getSortedByPrice();
-  } else if (sortBy === 'availability') {
-    products = productModel.getSortedByAvailability();
-  } else {
-    products = productModel.getAllProducts();
-  }
+  const products = productModel.getFilteredProducts({ searchQuery, sortBy, availability });
 
-  res.render('products', { products });
+  // Pass the current filter state back so the form can re-select the user's choices
+  res.render('products', {
+    products,
+    searchQuery: searchQuery || '',
+    sortBy: sortBy || '',
+    availability: availability || ''
+  });
 }
 
 // POST /products/add — create a new product from the "Add New Product" form

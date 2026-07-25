@@ -30,6 +30,42 @@ function getSortedByAvailability() {
   return db.prepare('SELECT * FROM item ORDER BY quantity ASC').all();
 }
 
+// Combined search + sort + availability filter for the products page.
+// options:
+//   searchQuery  - text to match against name (and description)
+//   sortBy       - 'price_asc' | 'price_desc'
+//   availability - 'in_stock' | 'out_of_stock'
+function getFilteredProducts({ searchQuery, sortBy, availability } = {}) {
+  const clauses = [];
+  const params = [];
+
+  if (searchQuery) {
+    clauses.push('(name LIKE ? OR description LIKE ?)');
+    const term = `%${searchQuery}%`;
+    params.push(term, term);
+  }
+
+  if (availability === 'in_stock') {
+    clauses.push('quantity > 0');
+  } else if (availability === 'out_of_stock') {
+    clauses.push('quantity <= 0');
+  }
+
+  let sql = 'SELECT * FROM item';
+  if (clauses.length) {
+    sql += ' WHERE ' + clauses.join(' AND ');
+  }
+
+  // Whitelist sort options to guard against SQL injection via ORDER BY
+  if (sortBy === 'price_asc') {
+    sql += ' ORDER BY price ASC';
+  } else if (sortBy === 'price_desc') {
+    sql += ' ORDER BY price DESC';
+  }
+
+  return db.prepare(sql).all(...params);
+}
+
 // Create a new product for sale
 function createProduct({ name, description, image_url, quantity, price }) {
   const result = db.prepare(
@@ -75,6 +111,7 @@ module.exports = {
   searchProducts,
   getSortedByPrice,
   getSortedByAvailability,
+  getFilteredProducts,
   createProduct,
   deleteProduct,
   updateProduct,
