@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "test": "node --test",
+    "prestart": "npm test",
+    "start": "node server.js"
+  },
   "dependencies": {
     "better-sqlite3": "^12.11.1",
     "dotenv": "^17.4.2",
@@ -10,4 +15,5 @@
   "allowScripts": {
     "better-sqlite3@12.11.1": true
   }
+
 }
