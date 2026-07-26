@@ -2,67 +2,68 @@
 <html>
 <head>
     <title>Customer Orders</title>
+    <link rel="stylesheet" href="public/css/style.css">
 </head>
 <body>
-    <h1>Customer Orders</h1>
-    
-    <!-- Navigation -->
-    <form action="/products" method="GET" style="display:inline;">
-        <button type="submit">View Products</button>
-    </form>
+    <div class="container">
+        <div class="nav-buttons">
+            <form action="/products" method="GET" style="display:inline;">
+                <button type="submit">View Products</button>
+            </form>
+        </div>
 
-    <!-- Sort Orders -->
-    <form action="/orders" method="GET">
-        <select name="sortBy">
-            <option value="">-- Sort By --</option>
-            <option value="user" <%= sortBy === 'user' ? 'selected' : '' %>>Customer</option>
-            <option value="order_date_asc" <%= sortBy === 'order_date_asc' ? 'selected' : '' %>>Order Date: Oldest First</option>
-            <option value="order_date_desc" <%= sortBy === 'order_date_desc' ? 'selected' : '' %>>Order Date: Newest First</option>
-            <option value="amount_asc" <%= sortBy === 'amount_asc' ? 'selected' : '' %>>Amount: Low to High</option>
-            <option value="amount_desc" <%= sortBy === 'amount_desc' ? 'selected' : '' %>>Amount: High to Low</option>
-        </select>
-        <button type="submit">Sort Orders</button>
-    </form>
+        <h1>Customer Orders</h1>
 
-    <hr>
+        <!-- Sort Orders -->
+        <form action="/orders" method="GET" class="flex-row">
+            <select name="sortBy">
+                <option value="">-- Sort By --</option>
+                <option value="user" <%= sortBy === 'user' ? 'selected' : '' %>>Customer</option>
+                <option value="order_date_asc" <%= sortBy === 'order_date_asc' ? 'selected' : '' %>>Order Date: Oldest First</option>
+                <option value="order_date_desc" <%= sortBy === 'order_date_desc' ? 'selected' : '' %>>Order Date: Newest First</option>
+                <option value="amount_asc" <%= sortBy === 'amount_asc' ? 'selected' : '' %>>Amount: Low to High</option>
+                <option value="amount_desc" <%= sortBy === 'amount_desc' ? 'selected' : '' %>>Amount: High to Low</option>
+            </select>
+            <button type="submit">Sort Orders</button>
+        </form>
 
-    <!-- Orders List / Table -->
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>Customer Username</th>
-                <th>Order Date</th>
-                <th>Total Amount</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% orders.forEach(function(order) { %>
-            <tr>
-                <td><%= order.id %></td>
-                <td><%= order.user %></td>
-                <td><%= order.order_date %></td>
-                <!-- totalAmount is calculated dynamically or joined in the controller -->
-                <td>$<%= order.totalAmount %></td> 
-                <td><%= order.status %></td>
-                <td>
-                    <!-- View Details -->
-                    <form action="/orders/details/<%= order.id %>" method="GET" style="display:inline;">
-                        <button type="submit">View Details</button>
-                    </form>
-                    
-                    <!-- Execute Order -->
-                    <% if(order.status === 'Pending') { %>
-                    <form action="/orders/execute/<%= order.id %>" method="POST" style="display:inline;">
-                        <button type="submit">Execute Order</button>
-                    </form>
-                    <% } %>
-                </td>
-            </tr>
-            <% }); %>
-        </tbody>
-    </table>
+        <hr>
+
+        <!-- Orders List / Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Order Date</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% orders.forEach(function(order) { %>
+                <tr>
+                    <td>#<%= order.id %></td>
+                    <td><strong><%= order.user %></strong></td>
+                    <td><%= order.order_date %></td>
+                    <td>$<%= order.totalAmount %></td> 
+                    <td><span class="status-badge"><%= order.status %></span></td>
+                    <td>
+                        <form action="/orders/details/<%= order.id %>" method="GET" style="display:inline;">
+                            <button type="submit" style="background: #6b7280;">Details</button>
+                        </form>
+                        
+                        <% if(order.status === 'Pending') { %>
+                        <form action="/orders/execute/<%= order.id %>" method="POST" style="display:inline;">
+                            <button type="submit" class="execute">Execute</button>
+                        </form>
+                        <% } %>
+                    </td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

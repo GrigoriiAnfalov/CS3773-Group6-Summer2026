@@ -2,101 +2,97 @@
 <html>
 <head>
     <title>Manage Product Catalog</title>
+    <link rel="stylesheet" href="public/css/style.css">
 </head>
 <body>
-    <h1>Product Inventory</h1>
+    <div class="container">
+        <div class="nav-buttons">
+            <form action="/orders" method="GET" style="display:inline;">
+                <button type="submit">View Orders</button>
+            </form>
+        </div>
 
-    <!-- Navigation -->
-    <form action="/orders" method="GET" style="display:inline;">
-        <button type="submit">View Orders</button>
-    </form>
+        <h1>Product Inventory</h1>
 
-    <hr>
+        <!-- Browse, Search, and Filter -->
+        <form action="/products" method="GET" class="flex-row">
+            <input type="text" name="searchQuery" placeholder="Search by Name/Description" value="<%= searchQuery %>">
+            <select name="sortBy">
+                <option value="">-- Sort By Price --</option>
+                <option value="price_asc" <%= sortBy === 'price_asc' ? 'selected' : '' %>>Price: Low to High</option>
+                <option value="price_desc" <%= sortBy === 'price_desc' ? 'selected' : '' %>>Price: High to Low</option>
+            </select>
+            <select name="availability">
+                <option value="">-- Filter by Availability --</option>
+                <option value="in_stock" <%= availability === 'in_stock' ? 'selected' : '' %>>Available</option>
+                <option value="out_of_stock" <%= availability === 'out_of_stock' ? 'selected' : '' %>>Out of Stock</option>
+            </select>
+            <button type="submit">Search & Filter</button>
+        </form>
 
-    <!-- Browse, Search, and Filter -->
-    <form action="/products" method="GET">
-        <input type="text" name="searchQuery" placeholder="Search by Name/Description" value="<%= searchQuery %>">
+        <hr>
 
-        <select name="sortBy">
-            <option value="">-- Sort By Price --</option>
-            <option value="price_asc" <%= sortBy === 'price_asc' ? 'selected' : '' %>>Price: Low to High</option>
-            <option value="price_desc" <%= sortBy === 'price_desc' ? 'selected' : '' %>>Price: High to Low</option>
-        </select>
+        <!-- Create New Item -->
+        <h2>Add New Product</h2>
+        <% if (locals.uploadError) { %>
+            <p style="color: red; font-weight: 500;">Image upload failed: <%= uploadError %></p>
+        <% } %>
+        <form action="/products/add" method="POST" enctype="multipart/form-data" class="flex-row">
+            <input type="text" name="name" placeholder="Item Name" required>
+            <input type="text" name="description" placeholder="Description">
+            <input type="number" name="quantity" placeholder="Quantity" required style="width: 100px;">
+            <input type="number" step="0.01" name="price" placeholder="Price" required style="width: 100px;">
+            <input type="file" id="productImage" name="image" accept="image/png, image/jpeg, image/webp, image/gif">
+            <button type="submit">Create Item</button>
+        </form>
 
-        <select name="availability">
-            <option value="">-- Filter by Availability --</option>
-            <option value="in_stock" <%= availability === 'in_stock' ? 'selected' : '' %>>Available</option>
-            <option value="out_of_stock" <%= availability === 'out_of_stock' ? 'selected' : '' %>>Out of Stock</option>
-        </select>
+        <hr>
 
-        <button type="submit">Search & Filter</button>
-    </form>
+        <!-- Create Discount Codes -->
+        <h2>Create Discount Code</h2>
+        <form action="/discounts/add" method="POST" class="flex-row">
+            <input type="text" name="code" placeholder="Discount Code (e.g., SAVE20)" required>
+            <input type="number" step="0.01" name="multiplier" placeholder="Multiplier (e.g., 0.80)" required>
+            <button type="submit">Add Discount</button>
+        </form>
 
-    <hr>
+        <hr>
 
-    <!-- Create New Item -->
-    <h2>Add New Product</h2>
-    <% if (locals.uploadError) { %>
-        <p style="color: red;">Image upload failed: <%= uploadError %></p>
-    <% } %>
-    <form action="/products/add" method="POST" enctype="multipart/form-data">
-        <input type="text" name="name" placeholder="Item Name" required>
-        <input type="text" name="description" placeholder="Description">
-        <input type="number" name="quantity" placeholder="Quantity" required>
-        <input type="number" step="0.01" name="price" placeholder="Price" required>
-        <label for="productImage">Product Image:</label>
-        <input type="file" id="productImage" name="image" accept="image/png, image/jpeg, image/webp, image/gif">
-        <button type="submit">Create Item</button>
-    </form>
-
-    <hr>
-
-    <!-- Create Discount Codes -->
-    <h2>Create Discount Code</h2>
-    <form action="/discounts/add" method="POST">
-        <input type="text" name="code" placeholder="Discount Code (e.g., SAVE20)" required>
-        <input type="number" step="0.01" name="multiplier" placeholder="Multiplier (e.g., 0.80)" required>
-        <button type="submit">Add Discount</button>
-    </form>
-
-    <hr>
-
-    <!-- Product List / Table -->
-    <h2>Current Inventory</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% products.forEach(function(product) { %>
-            <tr>
-                <td><%= product.id %></td>
-                <td><img src="/uploads/<%= product.image_url %>" alt="<%= product.name %>" width="50"></td>
-                <td><%= product.name %></td>
-                <td><%= product.description %></td>
-                <td><%= product.quantity %></td>
-                <td>$<%= product.price %></td>
-                <td>
-                    <!-- Modify Product -->
-                    <form action="/products/modify/<%= product.id %>" method="GET" style="display:inline;">
-                        <button type="submit">Edit</button>
-                    </form>
-                    <!-- Remove Product -->
-                    <form action="/products/remove/<%= product.id %>" method="POST" style="display:inline;">
-                        <button type="submit">Remove</button>
-                    </form>
-                </td>
-            </tr>
-            <% }); %>
-        </tbody>
-    </table>
+        <!-- Product List / Table -->
+        <h2>Current Inventory</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% products.forEach(function(product) { %>
+                <tr>
+                    <td><%= product.id %></td>
+                    <td><img src="/uploads/<%= product.image_url %>" alt="<%= product.name %>" width="50" style="border-radius: 4px;"></td>
+                    <td><strong><%= product.name %></strong></td>
+                    <td><%= product.description %></td>
+                    <td><%= product.quantity %></td>
+                    <td>$<%= product.price %></td>
+                    <td>
+                        <form action="/products/modify/<%= product.id %>" method="GET" style="display:inline;">
+                            <button type="submit">Edit</button>
+                        </form>
+                        <form action="/products/remove/<%= product.id %>" method="POST" style="display:inline;">
+                            <button type="submit" class="danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
