@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order #<%= order.id %> Details</title>
+</head>
+<body>
+    <h1>Order #<%= order.id %></h1>
+
+    <!-- Navigation -->
+    <form action="/orders" method="GET" style="display:inline;">
+        <button type="submit">Back to Orders</button>
+    </form>
+
+    <hr>
+
+    <!-- Order Summary -->
+    <table border="1">
+        <tbody>
+            <tr>
+                <th>Customer Username</th>
+                <td><%= order.user %></td>
+            </tr>
+            <tr>
+                <th>Order Date</th>
+                <td><%= order.order_date %></td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td><%= order.status %></td>
+            </tr>
+            <tr>
+                <th>Total Amount</th>
+                <td>$<%= order.totalAmount %></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <!-- Line Items -->
+    <h2>Items</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Line Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% order.items.forEach(function(item) { %>
+            <tr>
+            	<td><img src="/uploads/<%= item.image_url %>" alt="<%= item.name %>" width="50"></td>
+                <td><%= item.name %></td>
+                <td><%= item.item_quantity %></td>
+                <td>$<%= item.price %></td>
+                <td>$<%= (item.item_quantity * item.price).toFixed(2) %></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <!-- Execute Order -->
+    <% if (order.status === 'Pending') { %>
+    <form action="/orders/execute/<%= order.id %>" method="POST" style="display:inline;">
+        <button type="submit">Execute Order</button>
+    </form>
+    <% } %>
+</body>
+</html>

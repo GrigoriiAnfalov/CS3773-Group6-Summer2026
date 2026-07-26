@@ -16,6 +16,8 @@ function handleImageUpload(req, res, next) {
 
 router.get('/products', productController.showProductsPage);
 router.post('/products/add', handleImageUpload, productController.addProduct);
+router.get('/products/modify/:id', productController.showEditProductPage);
+router.post('/products/modify/:id', handleImageUpload, productController.updateProduct);
 router.post('/products/remove/:id', productController.removeProduct);
 
 module.exports = router;

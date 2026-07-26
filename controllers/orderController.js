@@ -44,14 +44,17 @@ function browseOrders(req, res) {
     case 'user':
       orders = orderModel.getOrdersSortedByCustomer();
       break;
-    case 'totalAmount':
-      orders = orderModel.getOrdersSortedByAmount(direction);
+    case 'order_date_asc':
+      orders = orderModel.getOrdersSortedByTime('ASC');
       break;
-    case 'status':
-      orders = orderModel.getOrdersSortedByStatus();
+    case 'order_date_desc':
+      orders = orderModel.getOrdersSortedByTime('DESC');
       break;
-    case 'order_date':
-      orders = orderModel.getOrdersSortedByTime(direction);
+    case 'amount_asc':
+      orders = orderModel.getOrdersSortedByAmount('ASC');
+      break;
+    case 'amount_desc':
+      orders = orderModel.getOrdersSortedByAmount('DESC');
       break;
     default:
       orders = orderModel.getAllOrders();

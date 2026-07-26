@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Product</title>
+</head>
+<body>
+    <h1>Edit Product</h1>
+
+    <% if (locals.uploadError) { %>
+        <p style="color: red;">Image upload failed: <%= uploadError %></p>
+    <% } %>
+
+    <form action="/products/modify/<%= product.id %>" method="POST" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Item Name" value="<%= product.name %>" required>
+        <input type="text" name="description" placeholder="Description" value="<%= product.description %>">
+        <input type="number" name="quantity" placeholder="Quantity" value="<%= product.quantity %>" required>
+        <input type="number" step="0.01" name="price" placeholder="Price" value="<%= product.price %>" required>
+
+        <p>
+            Current image:<br>
+            <img src="/uploads/<%= product.image_url %>" alt="<%= product.name %>" width="100">
+        </p>
+        <label for="productImage">Replace Image (optional):</label>
+        <input type="file" id="productImage" name="image" accept="image/png, image/jpeg, image/webp, image/gif">
+
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <form action="/products" method="GET" style="display:inline;">
+        <button type="submit">Cancel</button>
+    </form>
+</body>
+</html>

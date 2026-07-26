@@ -5,13 +5,21 @@
 </head>
 <body>
     <h1>Customer Orders</h1>
+    
+    <!-- Navigation -->
+    <form action="/products" method="GET" style="display:inline;">
+        <button type="submit">View Products</button>
+    </form>
 
     <!-- Sort Orders -->
     <form action="/orders" method="GET">
         <select name="sortBy">
-            <option value="order_date">Sort by Order Time (Newest First)</option>
-            <option value="user">Sort by Customer</option>
-            <option value="totalAmount">Sort by Order Size ($)</option>
+            <option value="">-- Sort By --</option>
+            <option value="user" <%= sortBy === 'user' ? 'selected' : '' %>>Customer</option>
+            <option value="order_date_asc" <%= sortBy === 'order_date_asc' ? 'selected' : '' %>>Order Date: Oldest First</option>
+            <option value="order_date_desc" <%= sortBy === 'order_date_desc' ? 'selected' : '' %>>Order Date: Newest First</option>
+            <option value="amount_asc" <%= sortBy === 'amount_asc' ? 'selected' : '' %>>Amount: Low to High</option>
+            <option value="amount_desc" <%= sortBy === 'amount_desc' ? 'selected' : '' %>>Amount: High to Low</option>
         </select>
         <button type="submit">Sort Orders</button>
     </form>

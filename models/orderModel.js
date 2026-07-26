@@ -12,7 +12,7 @@ function getOrderById(id) {
   if (!order) return null;
 
   const items = db.prepare(
-    `SELECT order_contents.item_quantity, item.name, item.price
+    `SELECT order_contents.item_quantity, item.name, item.price, item.image_url
      FROM order_contents
      JOIN item ON item.id = order_contents.item_id
      WHERE order_contents.order_id = ?`
