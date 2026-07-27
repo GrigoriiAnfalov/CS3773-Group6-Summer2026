@@ -52,9 +52,6 @@
                     <td><%= discount.multiplier %></td>
                     <td><%= Math.round((1 - discount.multiplier) * 100) %>% off</td>
                     <td>
-                        <form action="/discounts/edit/<%= discount.code %>" method="GET" style="display:inline;">
-                            <button type="submit">Edit</button>
-                        </form>
                         <form action="/discounts/remove/<%= discount.code %>" method="POST" style="display:inline;">
                             <button type="submit">Remove</button>
                         </form>

@@ -22,16 +22,16 @@ function addDiscount(req, res) {
   const { code, multiplier } = req.body;
 
   if (!code || multiplier === undefined) {
-    return res.status(400).redirect('/products');
+    return res.status(400).redirect('/discounts');
   }
 
   if (!isValidMultiplier(multiplier)) {
-    return res.status(400).redirect('/products');
+    return res.status(400).redirect('/discounts');
   }
 
   const existing = discountModel.getDiscountByCode(code);
   if (existing) {
-    return res.status(409).redirect('/products');
+    return res.status(409).redirect('/discounts');
   }
 
   discountModel.createDiscountCode({
@@ -39,7 +39,7 @@ function addDiscount(req, res) {
     multiplier: Number(multiplier)
   });
 
-  res.redirect('/products');
+  res.redirect('/discounts');
 }
 
 // GET /discounts/edit/:code — show the edit form for one code
