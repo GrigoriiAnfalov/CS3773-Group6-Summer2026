@@ -15,7 +15,7 @@ test('addDiscount rejects a request missing the code', () => {
   discountController.addDiscount(req, res);
 
   assert.equal(res.statusCode, 400);
-  assert.equal(res.redirectedTo, '/products');
+  assert.equal(res.redirectedTo, '/discounts');
 });
 
 test('addDiscount rejects a request missing the multiplier', () => {
@@ -25,7 +25,7 @@ test('addDiscount rejects a request missing the multiplier', () => {
   discountController.addDiscount(req, res);
 
   assert.equal(res.statusCode, 400);
-  assert.equal(res.redirectedTo, '/products');
+  assert.equal(res.redirectedTo, '/discounts');
 });
 
 test('addDiscount rejects a code that already exists', () => {
@@ -40,7 +40,7 @@ test('addDiscount rejects a code that already exists', () => {
   discountController.addDiscount(req, res);
 
   assert.equal(res.statusCode, 409);
-  assert.equal(res.redirectedTo, '/products');
+  assert.equal(res.redirectedTo, '/discounts');
 });
 
 test('addDiscount creates a new code and redirects on success', () => {
@@ -56,6 +56,6 @@ test('addDiscount creates a new code and redirects on success', () => {
   discountController.addDiscount(req, res);
 
   assert.deepEqual(created, { code: 'NEW20', multiplier: 0.8 });
-  assert.equal(res.redirectedTo, '/products');
+  assert.equal(res.redirectedTo, '/discounts');
   assert.equal(res.statusCode, 200);
 });
