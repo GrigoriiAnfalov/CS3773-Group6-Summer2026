@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Discount Codes</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="nav-buttons">
+            <form action="/products" method="GET" style="display:inline;">
+                <button type="submit">Back to Products</button>
+            </form>
+            <form action="/orders" method="GET" style="display:inline;">
+                <button type="submit">View Orders</button>
+            </form>
+        </div>
+
+        <h1>Discount Codes</h1>
+
+        <% if (error) { %>
+            <p style="color:red;"><%= error %></p>
+        <% } %>
+
+        <!-- Create a new code -->
+        <h2>Add Discount Code</h2>
+        <form action="/discounts/add" method="POST" class="flex-row">
+            <input type="text" name="code" placeholder="Discount Code (e.g., SAVE20)" required>
+            <input type="number" step="0.01" min="0.01" max="1" name="multiplier" placeholder="Multiplier (e.g., 0.80)" required>
+            <button type="submit">Add Discount</button>
+        </form>
+
+        <hr>
+
+        <!-- List of existing codes -->
+        <h2>Existing Codes</h2>
+        <% if (discounts.length === 0) { %>
+            <p>No discount codes yet.</p>
+        <% } else { %>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Multiplier</th>
+                    <th>Discount</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% discounts.forEach(function(discount) { %>
+                <tr>
+                    <td><%= discount.code %></td>
+                    <td><%= discount.multiplier %></td>
+                    <td><%= Math.round((1 - discount.multiplier) * 100) %>% off</td>
+                    <td>
+                        <form action="/discounts/edit/<%= discount.code %>" method="GET" style="display:inline;">
+                            <button type="submit">Edit</button>
+                        </form>
+                        <form action="/discounts/remove/<%= discount.code %>" method="POST" style="display:inline;">
+                            <button type="submit">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+        <% } %>
+    </div>
+</body>
+</html>

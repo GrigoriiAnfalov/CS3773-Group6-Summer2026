@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Discount Code</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="nav-buttons">
+            <form action="/discounts" method="GET" style="display:inline;">
+                <button type="submit">Back to Discounts</button>
+            </form>
+        </div>
+
+        <h1>Edit Discount Code</h1>
+
+        <% if (error) { %>
+            <p style="color:red;"><%= error %></p>
+        <% } %>
+
+        <!-- The code is the primary key and cannot be changed here; only the
+             multiplier is editable. To rename a code, delete it and add a new one. -->
+        <form action="/discounts/edit/<%= discount.code %>" method="POST" class="flex-row">
+            <label>
+                Code:
+                <input type="text" value="<%= discount.code %>" disabled>
+            </label>
+            <label>
+                Multiplier:
+                <input type="number" step="0.01" min="0.01" max="1" name="multiplier" value="<%= discount.multiplier %>" required>
+            </label>
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</body>
+</html>
