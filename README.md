@@ -27,6 +27,11 @@ npm start
 
 This runs the full test suite first, and only starts the server (on http://localhost:3000) if every test passes. See Tests below.
 
+There are 3 users preloaded into the database:
+* User1, 1234
+* GrigoriiA, Password123
+* admin, admin
+
 An optional SESSION_SECRET environment variable can be set to override the default dev session secret:
 
 SESSION_SECRET=your-secret npm start
